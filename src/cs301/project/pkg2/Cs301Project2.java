@@ -32,30 +32,37 @@ public class Cs301Project2 {
         while (filein.hasNext()) {      // while there is another token to read
             allInput.add(toFraction(filein.nextDouble(), 10)); // 1/10000
         }
-//        printArrayList(allInput);
+       
        ArrayList<String> x = new ArrayList<String>();
        for(int i=0; i<(allInput.size()/2);i++){
            x.add(allInput.get(i));
        }
        ArrayList<String> a = new ArrayList<String>();
+       ArrayList<String> y = new ArrayList<String>();
        for(int i=(allInput.size()/2); i<allInput.size();i++){
            a.add(allInput.get(i));
+           y.add(allInput.get(i));
        }
-//      
+       
        int size = x.size();
-//      
-    
+//     
+       ArrayList<ArrayList<String>> columns = new ArrayList<ArrayList<String>>();
+       columns.add(spaceOutList(x));
+       columns.add(spaceOutList(y));
+        
        for(int j=0; j<size; j++){
+           ArrayList<String> newCol = new ArrayList<String>();
            for(int i=size-1; i>j; i--){
                String newVal = rn.divide(rn.subtract(a.get(i), a.get(i-1)), rn.subtract(x.get(i), x.get(i-(j+1))));
 //               System.out.println("("+a.get(i)+"-"+ a.get(i-1)+")/("+x.get(i)+"-"+ x.get(i-(j+1))+")");
 //               System.out.println("Set" + newVal);
+                newCol.add(newVal);
                a.set(i,newVal );
            }
+           columns.add(spaceOutList(newCol,j+1));
        }
-//      
-
-       printArrayList(a);
+      print2dList(columns);
+        
        printNewtonForm(x,a);
     }
     
@@ -64,7 +71,27 @@ public class Cs301Project2 {
            System.out.println(n.get(i));
        }
    }
-
+   public static void print2dList(ArrayList<ArrayList<String>> columns){
+       System.out.printf("%8s","x");
+       int commaCount=0;
+       for(int i=0; i<columns.size()-2; i++){
+           String s = "f[";
+           for(int j=0; j<commaCount; j++){
+               s = s+",";
+           }
+           s = s + "]";
+           commaCount++;
+           System.out.printf("%8s", s);
+       }
+       System.out.print("\n");
+      for(int i=0; i<columns.get(0).size();i++){
+        for(int j=0; j<columns.size(); j++){
+          System.out.printf("%8s",columns.get(j).get(i));
+        }
+        System.out.print("\n");
+      }
+       
+   }
    
     public static String toFraction(double d, int factor) {
     StringBuilder sb = new StringBuilder();
@@ -103,17 +130,43 @@ public class Cs301Project2 {
             if(x.get(j).equals("0")){
                 System.out.print("x");
             }else{
+                
                 System.out.print("(x");
-                if(x.get(j).charAt(0)=='-'){
-                    x.set(j, x.get(j).substring(1, x.get(j).length()-1));
-                    System.out.print("+");
+                if( x.get(j).charAt(0)=='-'){
+                    System.out.print("+" + Integer.toString(Integer.parseInt(x.get(j))*-1));
                 }else{
-                    System.out.print("-");
+                    System.out.print("-"+x.get(j));
                 }
-                System.out.print(x.get(j)+")");
+                System.out.print(")");
             }
             
         }
      }
- }   
+     System.out.print("\n");
+    }
+ 
+    public static ArrayList<String> spaceOutList(ArrayList<String> l){
+        ArrayList<String> r = new ArrayList<String>();
+        for(int i=0; i<l.size(); i++){
+            r.add(l.get(i));
+            r.add(" ");
+        }
+        return r;
+    }
+    public static ArrayList<String> spaceOutList(ArrayList<String> l, int offset){
+        
+        ArrayList<String> r = new ArrayList<String>();
+        for(int i=0; i<offset; i++){
+         r.add(" ");
+        }
+        for(int i=l.size()-1; i>=0; i--){
+            r.add(l.get(i));
+            r.add(" ");
+        }
+        for(int i=0; i<offset; i++){
+         r.add(" ");
+        }
+        return r;
+    }
+    
 }

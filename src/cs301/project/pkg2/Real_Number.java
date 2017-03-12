@@ -48,6 +48,7 @@ public class Real_Number {
             numerator = Integer.parseInt(parts[0]);
             denominator = Integer.parseInt(parts[1]);
         }else{
+            parts[0] = parts[0].replaceAll("\\s+","");
             numerator = Integer.parseInt(parts[0]);
             denominator = 1;
         }
