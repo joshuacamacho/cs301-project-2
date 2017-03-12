@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cs301.project.pkg2;
 
 import java.io.FileInputStream;
@@ -54,20 +49,28 @@ public class Cs301Project2 {
            ArrayList<String> newCol = new ArrayList<String>();
            for(int i=size-1; i>j; i--){
                String newVal = rn.divide(rn.subtract(a.get(i), a.get(i-1)), rn.subtract(x.get(i), x.get(i-(j+1))));
-//               System.out.println("("+a.get(i)+"-"+ a.get(i-1)+")/("+x.get(i)+"-"+ x.get(i-(j+1))+")");
-//               System.out.println("Set" + newVal);
                 newCol.add(newVal);
                a.set(i,newVal );
            }
            columns.add(spaceOutList(newCol,j+1));
        }
       print2dList(columns);
-        
+       System.out.println("\nInterpolating polynomial is:");
        printNewtonForm(x,a);
+       System.out.print("\nSimplified polynomial is:\n");
+       printExpandedForm(x,a);
+       System.out.print("\n");
+//    
     }
     
    public static void printArrayList(ArrayList<String> n){
        for(int i=0; i<n.size();i++){
+           System.out.println(n.get(i));
+       }
+   }
+   
+   public static void printDoubleList(ArrayList<Double> n){
+       for(int i=0; i<n.size(); i++){
            System.out.println(n.get(i));
        }
    }
@@ -116,6 +119,52 @@ public class Cs301Project2 {
         sb.delete(0,1).append(Math.round(d * bestDenominator) + (l*bestDenominator)).append('/') .append(bestDenominator);
     if(d==0 && l==0) sb.append("0");
     return sb.toString();
+}
+ 
+public static void printExpandedForm(ArrayList<String> x, ArrayList<String> c){
+    Polynomial complete = new Polynomial();
+    for(int i=0; i<c.size(); i++){
+        Polynomial cur=new Polynomial();
+        Real_Number coef = new Real_Number(c.get(i));
+        
+        if(i==0){
+            ArrayList<Double> temp = new ArrayList<Double>();
+            temp.add((double)(coef.get_numerator()/coef.get_denominator()));
+            complete.setPolynomial(temp);
+            
+        }else{
+            for(int j=0; j<i; j++){
+            
+            ArrayList<Double> l = new ArrayList<Double>();
+            
+                Real_Number constant = new Real_Number(x.get(j));
+                l.add((double)(-1.0*constant.get_numerator()/constant.get_denominator()));
+                l.add(1.0);
+                if(j==0){
+                    cur.setPolynomial(l);
+                }else{
+                    cur.multiplySelf(l);
+                }
+
+//                cur.print();
+               
+            }
+//            System.out.println("Cur");
+//            cur.print();
+            double constMult = ((double)coef.get_numerator()/(double)coef.get_denominator());
+            cur.multiplySelf(constMult);
+//            System.out.println("\nCur scaled by "+constMult);
+//            cur.print();
+//            System.out.println("\nComplete");
+//            complete.print();
+            complete.addToSelf(cur);
+//            System.out.println("\nComplete + Curr");
+//            complete.print();
+        }
+        
+    }
+    
+    complete.print();
 }
     
  public static void printNewtonForm(ArrayList<String> x, ArrayList<String> c){
