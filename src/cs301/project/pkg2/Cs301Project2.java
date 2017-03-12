@@ -7,10 +7,8 @@ package cs301.project.pkg2;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.util.Scanner;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -27,13 +25,11 @@ public class Cs301Project2 {
         
         Scanner filein = new Scanner(new FileInputStream("input.txt"));
         
-        Real_Number n = new Real_Number();
+        Real_Number rn = new Real_Number();
         ArrayList<String> allInput = new ArrayList<String>();
-       // n.print_number(n.divide(new Real_Number("2/3"),new Real_Number("4/5")));
+       
         
         while (filein.hasNext()) {      // while there is another token to read
-             
-            
             allInput.add(toFraction(filein.nextDouble(), 10)); // 1/10000
         }
 //        printArrayList(allInput);
@@ -41,56 +37,26 @@ public class Cs301Project2 {
        for(int i=0; i<(allInput.size()/2);i++){
            x.add(allInput.get(i));
        }
-       ArrayList<String> y = new ArrayList<String>();
+       ArrayList<String> a = new ArrayList<String>();
        for(int i=(allInput.size()/2); i<allInput.size();i++){
-           y.add(allInput.get(i));
+           a.add(allInput.get(i));
        }
-       
-//       printArrayList(x);
-//       printArrayList(y);
-       
-       
-       ArrayList<ArrayList<String>> columns = new ArrayList<ArrayList<String>>();
-       columns.add(x);
-       columns.add(y);
-       while(columns.size() < (x.size()-1)){
-           int i=0;
-           int j=0;
-           ArrayList<String> newColumn = new ArrayList<String>();
-           int k=0;
-           int p=j+2;
-           while(newColumn.size() < columns.get(columns.size()-1).size()-1 ){
-               n.print_number(
-                       n.divide ( 
-                                n.subtract( 
-                                       new Real_Number(columns.get(j+1).get(i+1)), 
-                                       new Real_Number(columns.get(j+1).get(i))
-                                ),
-                                n.subtract(
-                                       new Real_Number(columns.get(0).get(p)), 
-                                       new Real_Number(columns.get(0).get(k))
-                               )));
-               
-               newColumn.add(
-                       n.get_number(n.divide(
-                               n.subtract( 
-                                       new Real_Number(columns.get(j+1).get(i+1)), 
-                                       new Real_Number(columns.get(j+1).get(i))
-                                ),
-                               n.subtract(
-                                       new Real_Number(columns.get(0).get(p)), 
-                                       new Real_Number(columns.get(0).get(k))
-                               )
-                       )
-                       )
-               );
-               p++;
-               k++;
-               i++;
+//      
+       int size = x.size();
+//      
+    
+       for(int j=0; j<size; j++){
+           for(int i=size-1; i>j; i--){
+               String newVal = rn.divide(rn.subtract(a.get(i), a.get(i-1)), rn.subtract(x.get(i), x.get(i-(j+1))));
+//               System.out.println("("+a.get(i)+"-"+ a.get(i-1)+")/("+x.get(i)+"-"+ x.get(i-(j+1))+")");
+//               System.out.println("Set" + newVal);
+               a.set(i,newVal );
            }
-           columns.add(newColumn);
-           j++;
        }
+//      
+
+       printArrayList(a);
+       printNewtonForm(x,a);
     }
     
    public static void printArrayList(ArrayList<String> n){
@@ -99,7 +65,7 @@ public class Cs301Project2 {
        }
    }
 
-    
+   
     public static String toFraction(double d, int factor) {
     StringBuilder sb = new StringBuilder();
     if (d < 0) {
@@ -125,5 +91,29 @@ public class Cs301Project2 {
     return sb.toString();
 }
     
-    
+ public static void printNewtonForm(ArrayList<String> x, ArrayList<String> c){
+     for(int i=0; i<c.size(); i++){
+        if(i!=0 && c.get(i).charAt(0)=='-'){
+            
+        }else if(i!=0){
+            System.out.print("+");
+        }
+        System.out.print(c.get(i));
+        for(int j=0; j<i; j++){
+            if(x.get(j).equals("0")){
+                System.out.print("x");
+            }else{
+                System.out.print("(x");
+                if(x.get(j).charAt(0)=='-'){
+                    x.set(j, x.get(j).substring(1, x.get(j).length()-1));
+                    System.out.print("+");
+                }else{
+                    System.out.print("-");
+                }
+                System.out.print(x.get(j)+")");
+            }
+            
+        }
+     }
+ }   
 }

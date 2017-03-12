@@ -5,6 +5,8 @@
  */
 package cs301.project.pkg2;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author Josh
@@ -175,6 +177,16 @@ public class Real_Number {
         
     }
     
+    public String divide(String a, String b){
+        
+        return get_number(divide(new Real_Number(a), new Real_Number(b)));
+    }
+    
+    public String subtract(String a, String b){
+        return get_number(subtract(new Real_Number(a), new Real_Number(b)));
+    }
+    
+    
     /**
      * Simplifies a rational number so that the numerator and denominator have
      * no common factors
@@ -197,15 +209,11 @@ public class Real_Number {
      * @param b The second integer
      * @return 
      */
-    public int gcd(int a, int b){
-        
-        if(a == 0)
-            return b;
-        if(a > b)
-            return gcd(a%b,b);
-        else
-            return gcd(b%a,a);
-        
+    public int gcd(int a, int b) {
+        BigInteger b1 = BigInteger.valueOf(a);
+        BigInteger b2 = BigInteger.valueOf(b);
+        BigInteger gcd = b1.gcd(b2);
+        return gcd.intValue();
     }
     
     /**
@@ -222,8 +230,21 @@ public class Real_Number {
     }
     
     public String get_number(Real_Number n){
-        String ret= String.valueOf(n.get_numerator()) + "/" +String.valueOf(n.get_denominator());
-        return ret;
+        if(n.get_numerator()==0) return "0"; 
+        
+        if(Math.abs(n.get_denominator())==Math.abs(n.get_numerator())){
+//            System.out.println("its 1" + n.get_numerator() + n.get_denominator());
+            return Integer.toString(n.get_numerator()/n.get_denominator());
+        }
+        else{
+            if(n.get_denominator()<0){
+                n.set_numerator(n.get_numerator()*-1);
+                n.set_denominator(n.get_denominator()*-1);
+            }
+        }
+        if(n.get_denominator()==1) return Integer.toString(n.get_numerator());
+        return String.valueOf(n.get_numerator()) + "/" +String.valueOf(n.get_denominator());
+        
     }
     
 }
