@@ -98,7 +98,9 @@ public class Cs301Project2 {
    
     public static String toFraction(double d, int factor) {
     StringBuilder sb = new StringBuilder();
+    boolean negative=false;
     if (d < 0) {
+        negative=true;
         sb.append('-');
         d = -d;
     }
@@ -118,6 +120,7 @@ public class Cs301Project2 {
     if (bestDenominator > 1)
         sb.delete(0,1).append(Math.round(d * bestDenominator) + (l*bestDenominator)).append('/') .append(bestDenominator);
     if(d==0 && l==0) sb.append("0");
+    if(negative && sb.toString().charAt(0)!='-') return ("-"+sb.toString());
     return sb.toString();
 }
  
